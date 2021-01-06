@@ -15,12 +15,10 @@ app.use(cookieParser());
 let RedisStore = require('connect-redis')(session)
 let redisClient = redis.createClient();
 
+// Otherwise, it will expire the session using the ttl option (default: 86400 seconds or one day).
 app.use(session({
     store: new RedisStore({client: redisClient}),
     secret: process.env.APP_KEY,
-    cookie: {
-        expires: new Date(Date.now() + (1000 * 60 * 60 * 2))
-    },
     resave: false
 }));
 
