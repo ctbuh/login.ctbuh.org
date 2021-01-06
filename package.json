@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon -e js,html,css",
-    "forever": "forever start --append -l forever.log -o out.log -e err.log index.js",
+    "forever": "forever start --append -l logs/forever.log -o logs/out.log -e logs/err.log index.js",
     "forever-stop": "forever stopall"
   },
   "author": "",
