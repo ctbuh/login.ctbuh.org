@@ -32,7 +32,7 @@ Database.prototype.save = async function (uid, data) {
 }
 
 Database.prototype.updateAccessToken = async function (uid, token) {
-    return this.query('UPDATE tokens SET access_token = ? WHERE uid = ? AND revoked_at IS NULL', [token, uid]);
+    return this.query('UPDATE tokens SET access_token = ? WHERE id = ? AND revoked_at IS NULL', [token, uid]);
 }
 
 Database.prototype.revoke = async function (uid) {

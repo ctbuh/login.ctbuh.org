@@ -161,7 +161,7 @@ app.get('/me', async function (req, res) {
     }).catch(function (err) {
 
         res.send({
-            error: err
+            error: err.message
         });
     });
 
