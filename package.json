@@ -6,7 +6,8 @@
   "scripts": {
     "serve": "nodemon -e js,html,css",
     "watch": "tsc -w",
-    "forever": "forever start --append -l logs/forever.log -o logs/out.log -e logs/err.log index.js",
+    "build": "tsc",
+    "forever": "forever --append start dist/index.js",
     "forever-stop": "forever stopall",
     "test": "mocha -r ts-node/register test/**/*.spec.ts"
   },
@@ -20,7 +21,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "forever": "^3.0.4",
+    "forever": "^4.0.1",
     "ioredis": "^4.27.6",
     "ip": "^1.1.5",
     "jsforce": "^1.10.0",

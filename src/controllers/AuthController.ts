@@ -14,7 +14,7 @@ export const AuthController = function (req: Request, res: Response) {
     const next = authRequest.nextNextUrl();
 
     // if already logged in: redirect back to next with ?token
-    if (session && false) {
+    if (session) {
 
         if (!next) {
 
