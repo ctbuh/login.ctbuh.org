@@ -5,6 +5,9 @@ export const SessionAuthMiddleware = async function (req: Request, res: Response
 
     const sid = req.cookies['sso_sid'];
 
+    // otherwise it would be undefined
+    req.session = null;
+
     if (sid) {
 
         try {

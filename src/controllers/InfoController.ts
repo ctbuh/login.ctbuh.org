@@ -2,18 +2,21 @@ import {Request, Response} from "express";
 import {LoginSessionOrNull, SessionRepository} from "../SessionRepository";
 import {asyncHandler} from "../types";
 import {getCachedSessionInfo} from "../GetSessionInfo";
+import {AppConfig} from "../config";
+
+// 15 minutes by default
+// @ts-ignore
+const USER_INFO_CACHE_TTL: number = AppConfig.user_info_cache_ttl || (60 * 15);
 
 export const MeController = asyncHandler(async function (req: Request, res: Response) {
 
-    const sid = req.cookies['sso_sid'];
-
-    const session: LoginSessionOrNull = await SessionRepository.findFromSessionId(sid);
+    const session = req.session;
 
     if (session) {
 
         try {
 
-            const info = await getCachedSessionInfo(session, 60 * 60);
+            const info = await getCachedSessionInfo(session, USER_INFO_CACHE_TTL);
             res.jsonp(info);
 
         } catch (ex) {
@@ -44,7 +47,7 @@ export const InfoController = asyncHandler(async function (req: Request, res: Re
 
         try {
 
-            const info = await getCachedSessionInfo(session, 60 * 60);
+            const info = await getCachedSessionInfo(session, USER_INFO_CACHE_TTL);
             res.json(info);
 
         } catch (ex) {

@@ -31,5 +31,6 @@ export class DatabaseConfig extends Singleton {
 export const AppConfig = {
     app_url: process.env.APP_URL,
     default_domain: process.env.DEFAULT_DOMAIN,
-    SENTRY_DSN: process.env.SENTRY_DSN
+    SENTRY_DSN: process.env.SENTRY_DSN,
+    user_info_cache_ttl: process.env.USER_INFO_CACHE_TTL
 }

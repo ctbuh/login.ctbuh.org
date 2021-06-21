@@ -13,8 +13,9 @@ export class UrlBuilder {
         }
     }
 
-    static getUrlOrigin(url: string) {
+    static getUrlOrigin(one: URL, two: URL): boolean {
 
+        return one.host === two.hash;
     }
 
     static isValidUrl(url: string) {

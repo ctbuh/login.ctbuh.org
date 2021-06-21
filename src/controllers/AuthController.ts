@@ -1,7 +1,6 @@
 import {Request, Response} from "express";
 import {dateHoursFromNow} from "../Util";
 import {Client} from "../Client";
-import {UrlBuilder} from "../classes/UrlBuilder";
 import {AuthRequest} from "../requests/AuthRequest";
 
 const force = new Client();
@@ -10,35 +9,30 @@ export const AuthController = function (req: Request, res: Response) {
 
     const authRequest = new AuthRequest(req);
 
-    const session = req.session;
-    const next = authRequest.nextNextUrl();
+    // we are already logged in!
+    if (authRequest.isLoggedIn()) {
 
-    // if already logged in: redirect back to next with ?token
-    if (session) {
+        // where do we redirect next? can this ever be empty?
+        const next = authRequest.findNextUrl();
 
-        if (!next) {
-
-            res.send({
-                error: 'Missing ?next= parameter'
-            });
-
-            return;
+        if (next) {
+            return res.redirect(302, next);
         }
 
-        const nextUrlWithToken = UrlBuilder.generateNextUrl(next, session.token);
-
-        // TODO: if nothing was found -> redirect to DEFAULT/?token=
-        return res.redirect(302, nextUrlWithToken);
+        return res.redirect(302, '/');
     }
 
-    res.cookie('next', authRequest.getNextFromQuery(), {
-        expires: dateHoursFromNow(2)
-    });
+    const next = authRequest.getNextFromQueryOrReferer();
 
-    // otherwise, send to ConfigSalesforce
-    let url = force.getAuthUrl();
+    if (next) {
 
-    // res.send(url);
-    res.redirect(302, url);
+        res.cookie('next', next, {
+            expires: dateHoursFromNow(2)
+        });
+    }
+
+    let loginUrl = force.getAuthUrl();
+
+    res.redirect(302, loginUrl);
 
 };

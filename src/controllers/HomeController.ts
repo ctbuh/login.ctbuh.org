@@ -1,5 +1,12 @@
 import {Request, Response} from "express";
 
 export const HomeController = function (req: Request, res: Response, next: any) {
-    return res.redirect(302, '/home.html');
+
+    const referer = req.header('Referer');
+
+    if (referer) {
+        return res.redirect(302, '/auth?_next=' + referer);
+    }
+
+    res.send('Hello world');
 };
