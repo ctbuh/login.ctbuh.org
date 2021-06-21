@@ -9,4 +9,5 @@ git pull
 npm install --production
 npm prune --production
 
+npm run build
 npm run forever
