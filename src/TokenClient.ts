@@ -1,5 +1,5 @@
 import {ConfigSalesforce} from "./config";
-import {AxiosInstance, AxiosResponse} from "axios";
+import {AxiosError, AxiosInstance, AxiosResponse} from "axios";
 import {IntrospectionResponse} from "./Models/IntrospectionResponse";
 import {Token} from "./Models/Token";
 
@@ -19,7 +19,7 @@ export class TokenClient {
             baseURL: 'https://' + this.config.oauth_login_url,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                //'Authorization': 'Bearer ' + token
+                //  'Authorization': base64(this.config.client_id + ':' + this.config.client_secret)
             }
         });
     }
@@ -51,14 +51,13 @@ export class TokenClient {
         return response.data;
     }
 
-    async revokeQuietly(token: Token): Promise<void> {
+    // TODO: make it return true or false whether revoking was a success
+    async revokeQuietly(token: Token, invalidateBoth: boolean = false): Promise<void> {
 
-        try {
-            await this.client.post("/services/oauth2/revoke", qs.stringify({
-                'token': token.accessToken
-            }));
-        } catch (ex) {
-            // do nothing
-        }
+        await this.client.post("/services/oauth2/revoke", qs.stringify({
+            'token': invalidateBoth ? token.refreshToken : token.accessToken
+        })).catch((err: AxiosError) => {
+            // console.log(err.response?.data);
+        });
     }
 }
