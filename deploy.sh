@@ -6,8 +6,10 @@ npm run forever-stop
 # git config credential.helper store
 git pull
 
-npm install --production
-npm prune --production
+#npm install --production
+#npm prune --production
+
+npm install --production=false
 
 npm run build
 npm run forever
