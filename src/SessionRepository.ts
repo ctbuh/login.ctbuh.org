@@ -44,7 +44,7 @@ export class SessionRepository {
         const sid = Security.getRandomSessionId();
         const token = Security.getRandomToken();
 
-        const ua = request.userAgent().substr(0, DEFAULT_STRING_LENGTH);
+        const ua = request.userAgent().substr(0, 255);
 
         await db.query(`
                     INSERT INTO sessions (created_at, sid, token, user_id, access_token, refresh_token, user_agent, ip_addr)
