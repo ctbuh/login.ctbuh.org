@@ -49,7 +49,7 @@ export class Client {
         return result;
     }
 
-    public getConnection(token: Token, refreshCallback: StringCallback) {
+    public getConnection(token: Token, refreshCallback: StringCallback): Connection {
 
         let connection: Connection = new jsforce.Connection({
             oauth2: this.oauth2,
