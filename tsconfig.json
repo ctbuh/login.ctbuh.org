@@ -16,7 +16,8 @@
     /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
-    "noPropertyAccessFromIndexSignature": true,
+    /* ruins process.env autocompletion if set to true */
+    "noPropertyAccessFromIndexSignature": false,
     /* Disallow inconsistently-cased references to the same file. */
     "outDir": "dist",
     "typeRoots": [
