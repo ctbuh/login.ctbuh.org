@@ -2,6 +2,7 @@ import {LoginSession} from "./Models/LoginSession";
 import {Database} from "./Database";
 import {UserInfoWithTokens} from "./Models/UserInfoWithTokens";
 import {Security} from "./lib/Security";
+import {CallbackRequest} from "./requests/CallbackRequest";
 
 const db = new Database();
 
@@ -38,14 +39,17 @@ export class SessionRepository {
         return null;
     }
 
-    static async createSessionFromAuthResponse(response: UserInfoWithTokens): Promise<LoginSessionOrNull> {
+    static async createSessionFromAuthResponse(response: UserInfoWithTokens, request: CallbackRequest): Promise<LoginSessionOrNull> {
 
         const sid = Security.getRandomSessionId();
         const token = Security.getRandomToken();
 
-        let result = await db.query('INSERT INTO sessions (created_at, sid, token, user_id, access_token, refresh_token) VALUES (NOW(), ?, ?, ?, ?, ?)', [
-            sid, token, response.userInfo.id, response.accessToken, response.refreshToken
-        ]);
+        const ua = request.userAgent().substr(0, DEFAULT_STRING_LENGTH);
+
+        await db.query(`
+                    INSERT INTO sessions (created_at, sid, token, user_id, access_token, refresh_token, user_agent, ip_addr)
+                    VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?)`,
+            [sid, token, response.userInfo.id, response.accessToken, response.refreshToken, ua, request.getIp()]);
 
         return this.findFromSessionId(sid);
     }

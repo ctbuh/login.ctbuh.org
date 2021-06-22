@@ -1,20 +1,21 @@
 import {Request, Response} from "express";
-import {CallbackResponse} from "../Models/CallbackResponse";
 import {LoginSessionOrNull, SessionRepository} from "../SessionRepository";
 import {dateYearFromNow} from "../Util";
 import {Client} from "../Client";
 import {asyncHandler} from "../types";
+import {CallbackRequest} from "../requests/CallbackRequest";
+import {UserInfoWithTokens} from "../Models/UserInfoWithTokens";
 
 const force = new Client();
 
 export const CallbackController = asyncHandler(async function (req: Request, res: Response) {
 
-    const callbackResponse = CallbackResponse.fromRequest(req);
+    const request = new CallbackRequest(req);
 
     // can fail
-    let userInfo = await force.exchangeAuthCodeForToken(callbackResponse.code);
+    let userInfo: UserInfoWithTokens = await force.exchangeAuthCodeForToken(request.code);
 
-    const newSession: LoginSessionOrNull = await SessionRepository.createSessionFromAuthResponse(userInfo);
+    const newSession: LoginSessionOrNull = await SessionRepository.createSessionFromAuthResponse(userInfo, request);
 
     if (newSession) {
 
