@@ -2,7 +2,7 @@
   "name": "login.ctbuh.org",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "serve": "nodemon -e js,html,css",
     "watch": "tsc -w",
@@ -26,8 +26,7 @@
     "ip": "^1.1.5",
     "jsforce": "^1.10.0",
     "mysql": "^2.18.1",
-    "qs": "^6.9.4",
-    "typescript": "^4.3.2"
+    "qs": "^6.9.4"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
@@ -40,6 +39,7 @@
     "@types/mysql": "^2.15.18",
     "mocha": "^9.0.0",
     "nodemon": "^2.0.4",
-    "ts-node": "^10.0.0"
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
   }
 }
