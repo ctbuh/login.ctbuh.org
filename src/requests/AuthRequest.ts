@@ -54,15 +54,10 @@ export class AuthRequest {
         const nextFromQuery = this.getNextFromQuery();
         const nextFromCookie = this.getNextFromCookie();
 
-        // TODO: problem is that the Referer persists across multiple redirects
-        const nextFromReferer = ''; //this.getNextFromReferer();
-
         if (nextFromQuery && UrlBuilder.isValidUrl(nextFromQuery)) {
             validNextUrl = nextFromQuery;
         } else if (nextFromCookie && UrlBuilder.isValidUrl(nextFromCookie)) {
             validNextUrl = nextFromCookie;
-        } else if (nextFromReferer && UrlBuilder.isValidUrl(nextFromReferer)) {
-            validNextUrl = nextFromReferer;
         }
 
         // TODO: check if redirect is not back to itself
