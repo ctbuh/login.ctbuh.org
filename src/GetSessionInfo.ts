@@ -4,8 +4,10 @@ import {SalesforceConnectionQuery} from "./lib/SalesforceConnectionQuery";
 import {RedisCache} from "./lib/RedisCache";
 import {Token} from "./Models/Token";
 import {SessionRepository} from "./SessionRepository";
+import {Connection} from "jsforce";
+import {Logger} from "./lib/Logger";
 
-const force = new Client();
+const forceClient = new Client();
 
 export const getCachedSessionInfo = async function (session: LoginSession, seconds: number) {
 
@@ -16,14 +18,32 @@ export const getCachedSessionInfo = async function (session: LoginSession, secon
     });
 }
 
-export const getSessionInfo = async function (session: LoginSession): Promise<any> {
+const freshConnection = function (session: LoginSession): Connection {
 
     const token: Token = session.getToken();
 
-    let connection = force.getConnection(token, async function (newToken: string) {
-        console.log('New Access Token: ' + newToken);
+    return forceClient.getConnection(token, async function (newToken: string) {
+        Logger.info('New Access Token: ' + newToken);
         await SessionRepository.updateAccessTokenForSession(session, newToken);
     });
+}
+
+// Will also refresh access token as a bonus!
+export const pingSession = async function (session: LoginSession): Promise<boolean> {
+
+    let con = freshConnection(session);
+
+    try {
+        await con.query('SELECT count() FROM User');
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export const getSessionInfo = async function (session: LoginSession): Promise<any> {
+
+    let connection = freshConnection(session);
 
     let identityInfo = await connection.identity();
 

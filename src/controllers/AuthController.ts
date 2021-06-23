@@ -9,8 +9,8 @@ export const AuthController = function (req: Request, res: Response) {
 
     const authRequest = new AuthRequest(req);
 
-    // we are already logged in!
-    if (authRequest.isLoggedIn()) {
+    // We are logged in AND tokens are still valid
+    if (authRequest.isLoggedIn() && authRequest.isSessionValid()) {
 
         // where do we redirect next? can this ever be empty?
         const next = authRequest.findNextUrl();

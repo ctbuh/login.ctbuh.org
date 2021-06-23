@@ -1,5 +1,6 @@
 import {Request} from 'express';
 import {UrlBuilder} from "../classes/UrlBuilder";
+import {pingSession} from "../GetSessionInfo";
 
 export class AuthRequest {
 
@@ -11,6 +12,15 @@ export class AuthRequest {
 
     public isLoggedIn(): boolean {
         return this.request.session !== null;
+    }
+
+    public async isSessionValid(): Promise<boolean> {
+
+        if (this.request.session) {
+            return await pingSession(this.request.session);
+        }
+
+        return false;
     }
 
     protected getNextFromQuery(): string {
@@ -43,7 +53,9 @@ export class AuthRequest {
 
         const nextFromQuery = this.getNextFromQuery();
         const nextFromCookie = this.getNextFromCookie();
-        const nextFromReferer = this.getNextFromReferer();
+
+        // TODO: problem is that the Referer persists across multiple redirects
+        const nextFromReferer = ''; //this.getNextFromReferer();
 
         if (nextFromQuery && UrlBuilder.isValidUrl(nextFromQuery)) {
             validNextUrl = nextFromQuery;
