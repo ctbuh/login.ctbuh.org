@@ -31,7 +31,7 @@ export class TokenClient {
         const response: AxiosResponse = await this.client.post('/services/oauth2/introspect', qs.stringify({
             'client_id': _config.client_id,
             'client_secret': _config.client_secret,
-            token: token,
+            'token': token,
             //  token_type_hint: 'refresh_token'
         }));
 
