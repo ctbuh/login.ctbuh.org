@@ -4,11 +4,6 @@ require('dotenv').config();
 
 type StringOrUndefined = string | undefined;
 
-export class SpecialConfig extends Singleton {
-    static readonly ONE = 1;
-    static readonly TWO = 2;
-}
-
 export const ConfigSalesforce = {
     client_id: process.env.SALESFORCE_OAUTH_CONSUMER_KEY,
     client_secret: process.env.SALESFORCE_OAUTH_CONSUMER_SECRET,
