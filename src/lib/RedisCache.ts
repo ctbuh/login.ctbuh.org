@@ -1,3 +1,5 @@
+import {timestampInSeconds} from "./Util";
+
 const Redis = require("ioredis");
 
 const client = new Redis({
@@ -5,6 +7,11 @@ const client = new Redis({
 })
 
 type Callback = () => any;
+
+interface RateLimitResponse {
+    success: boolean;
+    remaining: number;
+}
 
 export class RedisCache {
 
@@ -39,5 +46,31 @@ export class RedisCache {
         await this.keySet(key, result, seconds);
 
         return await this.keyGet(key);
+    }
+
+    static async rateLimit(key: string, decayInSeconds: number, maxAttempts: number): Promise<RateLimitResponse> {
+
+        const time = timestampInSeconds();
+
+        const removeBefore = (time - decayInSeconds);
+
+        // TODO: this all belongs in multi()
+        await client.zremrangebyscore(key, 0, removeBefore);
+        const count = await client.zcount(key, 0, '+inf');
+
+        if (count < maxAttempts) {
+            await client.zadd(key, time, `m${time}`);
+
+            return {
+                success: true,
+                remaining: (maxAttempts - count - 1),
+
+            }
+        }
+
+        return {
+            success: false,
+            remaining: 0
+        }
     }
 }

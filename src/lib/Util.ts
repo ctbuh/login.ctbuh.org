@@ -13,3 +13,8 @@ export const dateYearFromNow = function (): Date {
 export const oldestDatePossible = function (): Date {
     return (new Date(0));
 }
+
+export const timestampInSeconds = function (): number {
+    let s = new Date().getTime() / 1000;
+    return Math.round(s);
+}

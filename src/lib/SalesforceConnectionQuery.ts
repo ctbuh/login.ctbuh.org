@@ -22,8 +22,7 @@ export class SalesforceConnectionQuery {
         return fields;
     }
 
-    async findContact(id: string): Promise<any> {
-
+    protected async findContactRow(id: string): Promise<any> {
         let names = await this.getAllFieldNamesFor('Contact');
 
         let query = /** @text text */ `SELECT ${names.join(', ')} FROM Contact WHERE Id = '${id}'`;
@@ -35,5 +34,13 @@ export class SalesforceConnectionQuery {
         }
 
         return null;
+    }
+
+    async findContact(id: string): Promise<any> {
+        return this.connection.retrieve('Contact', id);
+    }
+
+    async findAccount(id: string) {
+        return this.connection.retrieve('Account', id);
     }
 }

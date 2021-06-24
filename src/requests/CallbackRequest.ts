@@ -25,7 +25,7 @@ export class CallbackRequest {
 
     public getIp(): string {
         const req = this.request;
-        return req.header('x-real-ip') || req.socket.remoteAddress || req.ip || "";
+        return req.header('x-real-ip') || req.ip || req.socket.remoteAddress || "";
     }
 
     public validate(): boolean {
