@@ -34,8 +34,6 @@ export class RedisCache {
             return existing;
         }
 
-        console.log('Cache miss!');
-
         let result = await callback();
 
         await this.keySet(key, result, seconds);

@@ -39,7 +39,7 @@ export class AuthRequest {
         return this.getNextFromQuery() || this.getNextFromReferer();
     }
 
-    public findNextUrl(): string {
+    public getRedirectUriWithToken(): string {
 
         // we are not logged in. We cannot go anywhere
         if (!this.request.session) {
@@ -62,7 +62,7 @@ export class AuthRequest {
 
         // TODO: check if redirect is not back to itself
         if (validNextUrl) {
-            return UrlBuilder.generateNextUrl(validNextUrl, token);
+            return UrlBuilder.urlWithToken(validNextUrl, token);
         }
 
         return "";

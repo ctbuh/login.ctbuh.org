@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
-import {dateHoursFromNow} from "../Util";
 import {Client} from "../Client";
 import {AuthRequest} from "../requests/AuthRequest";
+import {dateWeeksFromNow} from "../lib/Util";
 
 const force = new Client();
 
@@ -13,7 +13,7 @@ export const AuthController = function (req: Request, res: Response) {
     if (authRequest.isLoggedIn() && authRequest.isSessionValid()) {
 
         // where do we redirect next? can this ever be empty?
-        const next = authRequest.findNextUrl();
+        const next = authRequest.getRedirectUriWithToken();
 
         if (next) {
             return res.redirect(302, next);
@@ -22,12 +22,13 @@ export const AuthController = function (req: Request, res: Response) {
         return res.redirect(302, '/');
     }
 
+    // where to redirect upon successful login?
     const next = authRequest.getNextFromQueryOrReferer();
 
     if (next) {
 
         res.cookie('next', next, {
-            expires: dateHoursFromNow(2)
+            expires: dateWeeksFromNow()
         });
     }
 

@@ -1,10 +1,10 @@
 import {Request, Response} from "express";
 import {LoginSessionOrNull, SessionRepository} from "../SessionRepository";
-import {dateYearFromNow} from "../Util";
 import {Client} from "../Client";
 import {asyncHandler} from "../types";
 import {CallbackRequest} from "../requests/CallbackRequest";
 import {UserInfoWithTokens} from "../Models/UserInfoWithTokens";
+import {dateYearFromNow} from "../lib/Util";
 
 const force = new Client();
 

@@ -27,5 +27,6 @@ export const AppConfig = {
     app_url: process.env.APP_URL,
     default_domain: process.env.DEFAULT_DOMAIN,
     SENTRY_DSN: process.env.SENTRY_DSN,
-    user_info_cache_ttl: process.env.USER_INFO_CACHE_TTL
+    user_info_cache_ttl: process.env.USER_INFO_CACHE_TTL,
+    main_site_url: process.env.MAIN_SITE_URL
 }

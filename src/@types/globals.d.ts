@@ -1,0 +1,1 @@
+declare const DEFAULT_STRING_LENGTH = 255;

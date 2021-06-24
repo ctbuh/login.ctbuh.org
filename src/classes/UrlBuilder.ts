@@ -1,23 +1,5 @@
 export class UrlBuilder {
 
-    static changeUrlQueryParam(url: string, name: string, value: string) {
-
-        try {
-            let temp = new URL(url);
-            temp.searchParams.append(name, value);
-
-            return temp.toString();
-
-        } catch (ex) {
-            return null;
-        }
-    }
-
-    static getUrlOrigin(one: URL, two: URL): boolean {
-
-        return one.host === two.hash;
-    }
-
     static isValidUrl(url: string) {
 
         try {
@@ -28,12 +10,17 @@ export class UrlBuilder {
         }
     }
 
-    static generateNextUrl(next: string, token: string): string {
+    static urlWithToken(url: string, token: string): string {
+        return this.urlWithQueryParam(url, 'token', token);
+    }
 
-        let url = new URL(next);
-        url.searchParams.set('token', token);
+    // TODO: accept <string,string> map
+    private static urlWithQueryParam(url: string, name: string, value: string) {
 
-        return url.toString();
+        let temp = new URL(url);
+        temp.searchParams.append(name, value);
+
+        return temp.toString();
     }
 
     static getRedirectUri() {

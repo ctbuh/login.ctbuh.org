@@ -12,6 +12,10 @@ export class Security {
         return StringUtil.randomString(32);
     }
 
+    static base64(data: string): string {
+        return Buffer.from(data).toString('base64');
+    }
+
     static md5(data: string): string {
         return lib.createHash('md5').update(data).digest().toString('hex');
     }
