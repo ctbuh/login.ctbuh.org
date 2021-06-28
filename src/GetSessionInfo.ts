@@ -56,7 +56,15 @@ export const getSessionInfo = async function (session: LoginSession): Promise<an
     try {
 
         const contactId = identityInfo?.['custom_attributes']?.['Contact 18C ID'];
-        contact = await salesforceQuery.findContact(contactId)
+        contact = await salesforceQuery.findContact(contactId);
+
+        if (contact && 'AccountId' in contact) {
+
+            // @ts-ignore
+            let accountId = contact['AccountId'] as string;
+
+            account = await salesforceQuery.findAccount(accountId);
+        }
 
     } catch (ex) {
         // do nothing
