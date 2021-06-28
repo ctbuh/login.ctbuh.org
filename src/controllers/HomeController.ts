@@ -22,11 +22,11 @@ export const HomeController = function (req: Request, res: Response, next: any) 
 
         if (nextWithToken) {
 
-            res.json({
-                redirectUri: nextWithToken
-            }).end();
+            /*            res.json({
+                            redirectUri: nextWithToken
+                        }).end();*/
 
-            return;
+            return res.redirect(302, nextWithToken);
         }
 
         //  return res.redirect(302, '/home.html');
