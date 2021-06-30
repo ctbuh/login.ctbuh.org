@@ -33,6 +33,10 @@ export class RedisCache {
         return JSON.parse(val);
     }
 
+    public static async forget(key: string): Promise<void> {
+        await client.del(key);
+    }
+
     static async remember(key: string, seconds: number, callback: Callback): Promise<any> {
 
         const existing = await this.keyGet(key);

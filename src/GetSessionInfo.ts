@@ -9,13 +9,21 @@ import {Logger} from "./lib/Logger";
 
 const forceClient = new Client();
 
+function getSessionCacheKey(session: LoginSession) {
+    return `session_${session.sid}`;
+}
+
 export const getCachedSessionInfo = async function (session: LoginSession, seconds: number) {
 
-    const cacheKey = `session_${session.sid}`;
+    const cacheKey = getSessionCacheKey(session);
 
     return RedisCache.remember(cacheKey, seconds, async function () {
         return await getSessionInfo(session);
     });
+}
+
+export const forgetSessionCache = async function (session: LoginSession): Promise<void> {
+    await RedisCache.forget(getSessionCacheKey(session));
 }
 
 const freshConnection = function (session: LoginSession): Connection {
