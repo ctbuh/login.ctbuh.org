@@ -63,5 +63,15 @@ export class SessionRepository {
         await db.query('UPDATE sessions SET deleted_at = NOW() WHERE id = ?', [session.id]);
         return true;
     }
+
+    static async ping(): Promise<boolean> {
+
+        try {
+            await db.query('SELECT COUNT(1) AS cnt FROM sessions');
+            return true;
+        } catch (ex) {
+            return false;
+        }
+    }
 }
 

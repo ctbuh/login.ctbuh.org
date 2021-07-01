@@ -5,6 +5,7 @@ import {InfoController, MeController} from "./controllers/InfoController";
 import {LogoutController} from "./controllers/LogoutController";
 import {Server} from "./Server";
 import {SessionAuthMiddleware} from "./middleware/SessionAuthMiddleware";
+import {HealthCheckController} from "./controllers/HealthCheck";
 
 // TODO: validate config before starting server
 
@@ -21,6 +22,8 @@ router.get('/me', MeController);
 router.post('/info', InfoController);
 
 router.get('/logout', LogoutController);
+
+router.get('/healthcheck', HealthCheckController);
 
 // @ts-ignore
 const port: number = process.env.PORT || 3000;
