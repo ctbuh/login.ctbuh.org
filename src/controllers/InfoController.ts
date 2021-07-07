@@ -4,10 +4,19 @@ import {asyncHandler} from "../types";
 import {forgetSessionCache, getCachedSessionInfo} from "../GetSessionInfo";
 import {AppConfig} from "../config";
 import {Logger} from "../lib/Logger";
+import {RedisCache} from "../lib/RedisCache";
+import {DateUtil} from "../lib/DateUtil";
 
 // 15 minutes by default
 // @ts-ignore
 const USER_INFO_CACHE_TTL: number = AppConfig.user_info_cache_ttl || (60 * 15);
+
+const MAX_FRESH_PER_HOUR = 20;
+
+async function isFreshAvailable() {
+    let response = await RedisCache.rateLimit('rate_limiter:get_session_info:fresh', DateUtil.SECONDS_IN_HOUR, MAX_FRESH_PER_HOUR);
+    return response.remaining > 0;
+}
 
 export const MeController = asyncHandler(async function (req: Request, res: Response) {
 
@@ -18,7 +27,7 @@ export const MeController = asyncHandler(async function (req: Request, res: Resp
 
         try {
 
-            if (fresh) {
+            if (fresh && await isFreshAvailable()) {
                 await forgetSessionCache(session);
             }
 
@@ -54,7 +63,7 @@ export const InfoController = asyncHandler(async function (req: Request, res: Re
 
         try {
 
-            if (fresh) {
+            if (fresh && await isFreshAvailable()) {
                 await forgetSessionCache(session);
             }
 

@@ -18,3 +18,10 @@ export const timestampInSeconds = function (): number {
     let s = new Date().getTime() / 1000;
     return Math.round(s);
 }
+
+export const sleep = async function (ms: number) {
+
+    return new Promise(function (resolve, reject) {
+        setTimeout(resolve, ms);
+    })
+}
