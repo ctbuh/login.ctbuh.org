@@ -28,5 +28,6 @@ export const AppConfig = {
     default_domain: process.env.DEFAULT_DOMAIN,
     SENTRY_DSN: process.env.SENTRY_DSN,
     user_info_cache_ttl: process.env.USER_INFO_CACHE_TTL,
-    main_site_url: process.env.MAIN_SITE_URL
+    main_site_url: process.env.MAIN_SITE_URL,
+    cors_white_list: process.env.CORS_WHITELIST || ""
 }

@@ -25,3 +25,30 @@ export const sleep = async function (ms: number) {
         setTimeout(resolve, ms);
     })
 }
+
+export const getItemsFromCommaList = function (str: string): Array<string> {
+
+    let result = new Array<string>();
+
+    result = str.split(',').filter(function (val: string) {
+        return val.length > 0;
+    });
+
+    return result;
+}
+
+export const stringContainsAnyFromArray = function (str: string, substringArray: Array<string>): boolean {
+
+    let contains = false;
+
+    for (const sub of substringArray) {
+
+        // substring cannot be empty
+        if (sub.length && str.includes(sub)) {
+            contains = true;
+            break;
+        }
+    }
+
+    return contains;
+}

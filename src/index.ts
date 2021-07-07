@@ -6,10 +6,15 @@ import {LogoutController} from "./controllers/LogoutController";
 import {Server} from "./Server";
 import {SessionAuthMiddleware} from "./middleware/SessionAuthMiddleware";
 import {HealthCheckController} from "./controllers/HealthCheck";
+import {getItemsFromCommaList} from "./lib/Util";
+import {AppConfig} from "./config";
 
 // TODO: validate config before starting server
-
 const server = new Server();
+
+if (AppConfig.cors_white_list) {
+    server.setCorsWhiteList(getItemsFromCommaList(AppConfig.cors_white_list));
+}
 
 let router = server.getRouter();
 router.use(SessionAuthMiddleware);

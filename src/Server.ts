@@ -1,6 +1,7 @@
 import {Application, NextFunction, Request, Response, Router} from "express";
 import path from "path";
 import {ErrorHandler} from "./ErrorHandler";
+import {stringContainsAnyFromArray} from "./lib/Util";
 
 const express = require('express');
 
@@ -15,7 +16,7 @@ export class Server {
     protected app: Application;
     protected router: Router;
 
-    protected corsWhiteList = [];
+    protected corsWhiteList: string[] = [];
 
     constructor() {
 
@@ -62,6 +63,10 @@ export class Server {
         this.app.use(cookieParser());
     }
 
+    public setCorsWhiteList(list: string[]) {
+        this.corsWhiteList = list;
+    }
+
     protected enableCors() {
 
         const oThis = this;
@@ -69,7 +74,7 @@ export class Server {
         this.app.use(cors({
             // Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*'
             origin: function (origin: string, callback: any) {
-                if (oThis.corsWhiteList.length < 1) {
+                if (oThis.corsWhiteList.length === 0 || stringContainsAnyFromArray(origin, oThis.corsWhiteList)) {
                     callback(null, true)
                 } else {
                     callback(new Error('Not allowed by CORS'))

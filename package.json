@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "serve": "nodemon -e js,html,css",
+    "serve": "nodemon -e js,html,css dist/index.js",
     "watch": "tsc -w",
     "build": "tsc",
     "start": "node dist/index.js",
