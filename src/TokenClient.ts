@@ -51,6 +51,7 @@ export class TokenClient {
         return response.data;
     }
 
+    // If a refresh token is included, Salesforce revokes it and any associated access tokens.
     // TODO: make it return true or false whether revoking was a success
     async revokeQuietly(token: Token, invalidateBoth: boolean = false): Promise<void> {
 
