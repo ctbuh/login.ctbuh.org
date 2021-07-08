@@ -19,12 +19,10 @@ export const HomeController = function (req: Request, res: Response, next: any) 
             nextWithToken = UrlBuilder.urlWithToken(AppConfig.main_site_url, session.token);
             console.log(`Redirect from main_site_url: ${nextWithToken}`);
         }
-
+        
         if (nextWithToken) {
             return res.redirect(302, nextWithToken);
         }
-
-        //  return res.redirect(302, '/home.html');
     }
 
     if (AppConfig.main_site_url) {
