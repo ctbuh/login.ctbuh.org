@@ -1,4 +1,5 @@
 import {Singleton} from "./classes/Singleton";
+import Joi from "joi";
 
 require('dotenv').config();
 
@@ -11,9 +12,9 @@ export const ConfigSalesforce = {
     oauth_login_url: process.env.SALESFORCE_OAUTH_DOMAIN,
     oauth_redirect_uri: process.env.SALESFORCE_OAUTH_REDIRECT_URI,
 
-    api_username: process.env.SALESFORCE_API_USERNAME,
-    api_password: process.env.SALESFORCE_API_PASSWORD,
-    api_security_token: process.env.SALESFORCE_API_SECURITY_TOKEN
+    /*    api_username: process.env.SALESFORCE_API_USERNAME,
+        api_password: process.env.SALESFORCE_API_PASSWORD,
+        api_security_token: process.env.SALESFORCE_API_SECURITY_TOKEN*/
 }
 
 export class DatabaseConfig extends Singleton {
@@ -31,3 +32,12 @@ export const AppConfig = {
     main_site_url: process.env.MAIN_SITE_URL,
     cors_white_list: process.env.CORS_WHITELIST || ""
 }
+
+
+export const ConfigSchemaValidator = Joi.object({
+    SALESFORCE_OAUTH_CONSUMER_KEY: Joi.string().required(),
+    SALESFORCE_OAUTH_CONSUMER_SECRET: Joi.string().required(),
+    SALESFORCE_OAUTH_DOMAIN: Joi.string().required(),
+    SALESFORCE_OAUTH_REDIRECT_URI: Joi.string().required()
+}).unknown();
+

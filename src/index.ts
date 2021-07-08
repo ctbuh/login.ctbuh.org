@@ -7,9 +7,14 @@ import {Server} from "./Server";
 import {SessionAuthMiddleware} from "./middleware/SessionAuthMiddleware";
 import {HealthCheckController} from "./controllers/HealthCheck";
 import {getItemsFromCommaList} from "./lib/Util";
-import {AppConfig} from "./config";
+import {AppConfig, ConfigSchemaValidator} from "./config";
 
-// TODO: validate config before starting server
+const {error} = ConfigSchemaValidator.validate(process.env);
+
+if (error) {
+    throw new Error(`Config validation error: ${error.message}`);
+}
+
 const server = new Server();
 
 if (AppConfig.cors_white_list) {
