@@ -19,6 +19,11 @@ export class ErrorHandler {
     }
 
     static report(err: any) {
-        this.sentryErrorHandler(err);
+
+        if (AppConfig.SENTRY_DSN) {
+            this.sentryErrorHandler(err);
+        } else {
+            console.error(err);
+        }
     }
 }

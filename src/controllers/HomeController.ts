@@ -21,19 +21,18 @@ export const HomeController = function (req: Request, res: Response, next: any) 
         }
 
         if (nextWithToken) {
-
-            /*            res.json({
-                            redirectUri: nextWithToken
-                        }).end();*/
-
             return res.redirect(302, nextWithToken);
         }
 
         //  return res.redirect(302, '/home.html');
     }
 
+    if (AppConfig.main_site_url) {
+        return res.redirect(302, AppConfig.main_site_url);
+    }
+
     res.json({
-        message: 'Go to a site to which you wish to login'
+        message: 'Single sign-on for Salesforce'
     });
 
 };
