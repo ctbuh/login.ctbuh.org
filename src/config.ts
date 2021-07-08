@@ -35,9 +35,9 @@ export const AppConfig = {
 
 
 export const ConfigSchemaValidator = Joi.object({
+    APP_URL: Joi.string().required(),
     SALESFORCE_OAUTH_CONSUMER_KEY: Joi.string().required(),
     SALESFORCE_OAUTH_CONSUMER_SECRET: Joi.string().required(),
-    SALESFORCE_OAUTH_DOMAIN: Joi.string().required(),
-    SALESFORCE_OAUTH_REDIRECT_URI: Joi.string().required()
+    SALESFORCE_OAUTH_DOMAIN: Joi.string().required()
 }).unknown();
 
