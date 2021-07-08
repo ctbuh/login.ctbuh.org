@@ -79,6 +79,7 @@ export const getSessionInfo = async function (session: LoginSession): Promise<an
     }
 
     return {
+        token: session.token,
         identity: identityInfo,
         contact: contact,
         account: account
